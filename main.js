@@ -22,7 +22,7 @@ function hiddenMode(){
 	}catch(e){}
 	
 }
-hiddenMode()
+//hiddenMode()
 
 
 function roundFractionNumber(n){
@@ -110,28 +110,21 @@ function changeResultTo12(){
 function autoBetPatternFinder(){
     console.log("[function]  : autoBetPatternFinder()")
 
-    //console.clear()
-	const betsList = document.querySelector(".bets-list");
+    const betsList = document.querySelector(".bets-list");
 	
-    if (betsList) {
+    if (betsList) 
 		 betsList.innerHTML = `<center style="font-size:18px;"> -- Code By <i>turnhex</i>  [${globalList.length}] --</center>`;
-    }
 
 	let winnp  = winnPattern()
 	let faildp = faildPattern()
 	
 	
-	
-	//betsList.innerHTML += "<br>"
-		
 	last13resultWinn = winnp.slice(0, patternRange)
 	last13resultFaild = faildp.slice(0, patternRange)
 	
 	stringHtmlPatterns = `<div>`
-	let winPatternDisplayRange  = winnp.length > 15 ? 15 : winnp.length
-	let failPatternDisplayRange = faildp.length > 15 ? 15 : faildp.length
-	
-
+	let winPatternDisplayRange  = winnp.length  > 15 ? 16 : winnp.length
+	let failPatternDisplayRange = faildp.length > 15 ? 16 : faildp.length
 	
 	let stringHtmlWinPattern = 'Winn = '
 	for(let x=0; x<(winPatternDisplayRange-patternRange); x+=patternRange){
@@ -146,8 +139,6 @@ function autoBetPatternFinder(){
 	}
 	stringHtmlPatterns += stringHtmlWinPattern + stringHtmlFailPattern + `</div>`
 	betsList.innerHTML += stringHtmlPatterns
-	
-	
     	
 	//retrive old pattern result 
 	let newGlobalList = []
@@ -158,8 +149,6 @@ function autoBetPatternFinder(){
 	console.log(`globalCurrentWinndPattern : ${globalCurrentWinndPattern}`)
 	console.log(`globalCurrentFaildPattern : ${globalCurrentFaildPattern}`)
 	
-
-    
 	function customeWinPattern(){
 		let count = 0
 		let pattern = []
@@ -213,8 +202,7 @@ function autoBetPatternFinder(){
 			newGlobalList= tmpNewGlobalList
 		}
 		
-		
-		currentWinnPattern = customeWinPattern()
+		currentWinnPattern  = customeWinPattern()
 		currentFaildPattern = customeFaildPattern()
 
         
@@ -222,7 +210,7 @@ function autoBetPatternFinder(){
 			currentWinP = currentWinnPattern.slice(0, patternRange).toString()
 		    
 			if(currentWinP == globalCurrentWinndPattern){
-				console.log(`Similare : currentWinP ${currentWinP} == ${globalCurrentWinndPattern} globalCurrentWinndPattern`)
+				//console.log(`Similare : currentWinP ${currentWinP} == ${globalCurrentWinndPattern} globalCurrentWinndPattern`)
                 if(globalList[x-1])
 				    winnPatternResults.push(globalList[x-1])
 			}
@@ -233,7 +221,7 @@ function autoBetPatternFinder(){
 			currentFailP = currentFaildPattern.slice(0, patternRange).toString()
             
 			if(currentFailP == globalCurrentFaildPattern){
-				console.log(`Similare : currentFailP ${currentFailP} == ${globalCurrentFaildPattern} globalCurrentFaildPattern`)
+				//console.log(`Similare : currentFailP ${currentFailP} == ${globalCurrentFaildPattern} globalCurrentFaildPattern`)
                 if(globalList[x-1])
 				    faildPatternResults.push(globalList[x-1])
 			}
@@ -241,10 +229,10 @@ function autoBetPatternFinder(){
 		
 	}
 	
-    winnPatternResults = winnPatternResults.reverse()
+    winnPatternResults  = winnPatternResults.reverse()
 	faildPatternResults = faildPatternResults.reverse()
 
-    let priviusLastOdd = globalList[0] > 1.99 ? winnPatternResults.length == 0 ? globalList[0] : winnPatternResults[0]  : faildPatternResults.length == 0 ? globalList[0] : faildPatternResults[0]
+    let priviusLastOdd = globalList[0] > 1.99 ? winnPatternResults.length < 1 ? globalList[0] : winnPatternResults[0]  : faildPatternResults.length < 1 ? globalList[0] : faildPatternResults[0]
     
     let priviusLastOddAfterHistory = []
 
@@ -256,7 +244,7 @@ function autoBetPatternFinder(){
     
     
     // game is on win 
-    s_history = '<table>'
+    let s_history = '<table>'
 
     if(globalList[0] > 1.99){
         s_history += `
@@ -309,19 +297,24 @@ function autoBetPatternFinder(){
         }
     }
     s_history += '</table>'
+	
+	
+	if(globalList[0] < 2){
+		
+		if(faildp.slice(0,patternRange).reverse() == faildp.slice(patternRange, patternRange*2)){
+			s_history += `Reverse Equal With Privius : r ${faildp.slice(0,patternRange).reverse()} == ${faildp.slice(patternRange, patternRange*2)}`
+		}
+	}
 
     
     s_history += `
         <br>
         <div>
-        <center>
-            <button onclick="incremmentPatternRange('d')">-</button>  ${patternRange} <button onclick="incremmentPatternRange('i')">+</button> 
-        </center>
+			<center>
+				<button onclick="incremmentPatternRange('d')">-</button>  ${patternRange} <button onclick="incremmentPatternRange('i')">+</button> 
+			</center>
         </div>
-
-		
     `
-
 
 	betsList.innerHTML  += s_history
 		
@@ -330,8 +323,8 @@ function autoBetPatternFinder(){
 
 function lastProcess(){
 	
-	
 	let payout = document.querySelector('.payouts-block').getElementsByClassName("payout")
+	
 	let result = []
 	for(let x=0; x<payout.length; x++){
 		result.push(parseFloat(payout[x].innerText.replace('x','')))
@@ -342,8 +335,9 @@ function lastProcess(){
 	}else{
 		//upped on global list
 		
-		let positionGlobalList = globalList.slice(0,4)
+		let positionGlobalList = globalList.slice(0,4) //slice the first 3 results 
 		let positionPointer = 0
+		
 		for(let x=0; x<result.length; x++){
 			positionCurrentList = result.slice(x, x+4)
 			if(positionCurrentList.toString() == positionGlobalList.toString()){
@@ -357,9 +351,8 @@ function lastProcess(){
 		//betsList.innerHTML += `New result : ${newList} `
 		newList.push(...globalList)
 		globalList = newList
-		
+
 	}
-		
 	
 	autoBetPatternFinder()
 }
