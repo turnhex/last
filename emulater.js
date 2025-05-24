@@ -892,21 +892,44 @@ for(let x=data.length-1; x>=0; x--){
 	let winnp 	= winnpattern()
 	let faildp  = faildpattern()
 	
-	if(winnp.length > patternRange  & faildp.length > patternRange){
+	if(winnp.length >= patternRange  & faildp.length >= patternRange){
 	
 		last13resultWinn = winnp.slice(0, patternRange)
 		last13resultFaild = faildp.slice(0, patternRange)
 		
 		
 		//console.log(`last13resultWinn : ${last13resultWinn}`)
-		console.log(patternRange, patternRange*2)
+		console.log(patternRange, (patternRange*2))
+	
 		
-		if(faildp.slice(0,patternRange).reverse().toString() == faildp.slice(patternRange, patternRange*2).toString()){
+		
+		
+		if(globalList[0] < 2 & faildp.slice(0,patternRange).reverse().toString() == faildp.slice(patternRange, patternRange*2).toString()){
 			manageBlance(data[x-1])
 			
 			console.log(`Test Game    : faildp = ${faildp.slice(0,patternRange).reverse().toString()} == ${faildp.slice(patternRange, patternRange*2).toString()}`)
-			console.log(`Result Go To : ${data[x-1]}`)
+			
+			if(data[x-1] > 2){
+				console.log(`%cResult Go To : ${data[x-1]}`, 'color:green')
+			}else{
+				console.log(`%cResult Go To : ${data[x-1]}`, 'color:red')
+			}
 		}
+		
+		if(globalList[0] > 2 & winnp.slice(0,patternRange).reverse().toString() == winnp.slice(patternRange, patternRange*2).toString()){
+			console.log(`globalList : ${globalList.slice(0, patternRange*2)}`)
+			manageBlance(data[x-1])
+			
+			console.log(`Test Game    : winnp = ${winnp.slice(0,patternRange).toString()} == ${winnp.slice(patternRange, patternRange*2).toString()}`)
+			
+			if(data[x-1] > 2){
+				console.log(`%cResult Go To : ${data[x-1]}`, 'color:green')
+			}else{
+				console.log(`%cResult Go To : ${data[x-1]}`, 'color:red')
+			}
+		}
+		
+		
 	
 	}
 	
