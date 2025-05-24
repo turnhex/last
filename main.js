@@ -108,7 +108,7 @@ function changeResultTo12(){
 }
 
 function autoBetPatternFinder(){
-    console.log("[function]  : autoBetPatternFinder()")
+    //console.log("[function]  : autoBetPatternFinder()")
 
     const betsList = document.querySelector(".bets-list");
 	
@@ -146,8 +146,8 @@ function autoBetPatternFinder(){
 	let globalCurrentWinndPattern = winnp.slice(0, patternRange).toString()
 	let globalCurrentFaildPattern = faildp.slice(0, patternRange).toString()
 	
-	console.log(`globalCurrentWinndPattern : ${globalCurrentWinndPattern}`)
-	console.log(`globalCurrentFaildPattern : ${globalCurrentFaildPattern}`)
+	//console.log(`globalCurrentWinndPattern : ${globalCurrentWinndPattern}`)
+	//console.log(`globalCurrentFaildPattern : ${globalCurrentFaildPattern}`)
 	
 	function customeWinPattern(){
 		let count = 0
