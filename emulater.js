@@ -898,12 +898,10 @@ for(let x=data.length-1; x>=0; x--){
 		last13resultFaild = faildp.slice(0, patternRange)
 		
 		
+		
 		//console.log(`last13resultWinn : ${last13resultWinn}`)
 		console.log(patternRange, (patternRange*2))
 	
-		
-		
-		
 		if(globalList[0] < 2 & faildp.slice(0,patternRange).reverse().toString() == faildp.slice(patternRange, patternRange*2).toString()){
 			manageBlance(data[x-1])
 			
@@ -921,6 +919,20 @@ for(let x=data.length-1; x>=0; x--){
 			manageBlance(data[x-1])
 			
 			console.log(`Test Game    : winnp = ${winnp.slice(0,patternRange).toString()} == ${winnp.slice(patternRange, patternRange*2).toString()}`)
+			
+			if(data[x-1] > 2){
+				console.log(`%cResult Go To : ${data[x-1]}`, 'color:green')
+			}else{
+				console.log(`%cResult Go To : ${data[x-1]}`, 'color:red')
+			}
+		}
+		
+		if(faildp.slice(0, patternRange).toString() != [1,1,1,1])
+		if(globalList[0] < 2 & faildp.slice(0,patternRange).reverse().toString() == winnp.slice(patternRange, patternRange*2).toString()){
+			console.log(`globalList : ${globalList.slice(0, patternRange*2)}`)
+			manageBlance(data[x-1])
+			
+			console.log(`Test Game    : faildp=winnp = ${faildp.slice(0,patternRange).toString()} == ${winnp.slice(patternRange, patternRange*2).toString()}`)
 			
 			if(data[x-1] > 2){
 				console.log(`%cResult Go To : ${data[x-1]}`, 'color:green')
