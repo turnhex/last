@@ -317,6 +317,33 @@ function autoBetPatternFinder(){
     `
 
 	betsList.innerHTML  += s_history
+	
+	
+	
+	const backuppatternRange = patternRange
+	patternRange = 4
+	
+	if(globalList[0] < 2 & faildp.slice(0,patternRange).reverse().toString() == faildp.slice(patternRange, patternRange*2).toString() & faildp.slice(0, patternRange).toString() != [1,1,1,1]){
+			
+		console.log(`Test Game    : faildp = ${faildp.slice(0,patternRange).reverse().toString()} == ${faildp.slice(patternRange, patternRange*2).toString()}`)
+			
+		betsList.innerHTML  += '<h3> Bet Know Option 1</h3>'
+		document.getElementsByClassName("btn ng-star-inserted btn-success bet")[0].click()
+	
+	}
+		
+	if(globalList[0] > 2 & winnp.slice(0,patternRange).reverse().toString() == winnp.slice(patternRange, patternRange*2).toString()  & winnp.slice(0, patternRange).toString() != [1,1,1,1]){
+		betsList.innerHTML  += '<h3> Bet Know Option 2</h3>'
+		document.getElementsByClassName("btn ng-star-inserted btn-success bet")[0].click()
+	}
+		
+	if(faildp.slice(0, patternRange).toString() != [1,1,1,1])
+	if(globalList[0] < 2 & faildp.slice(0,patternRange).reverse().toString() == winnp.slice(patternRange, patternRange*2).toString()){
+		betsList.innerHTML  += '<h3> Bet Know Option 3</h3>'
+		document.getElementsByClassName("btn ng-star-inserted btn-success bet")[0].click()
+	}
+	
+	patternRange = backuppatternRange
 		
 	return true	
 }
@@ -351,6 +378,9 @@ function lastProcess(){
 		//betsList.innerHTML += `New result : ${newList} `
 		newList.push(...globalList)
 		globalList = newList
+		
+		
+		document.getElementsByClassName("bets-widget-footer")[0].innerHTML = ""
 
 	}
 	
@@ -385,3 +415,103 @@ if (targetNodeResult) {
 } else {
   console.error('Element with class "payouts-block" not found.');
 }
+
+
+
+
+// ======================== cashout =============================
+
+function lastCashOutProcess(cashoutAmount, betAmount){
+	
+	if(cashoutAmount > ((betAmount*2)/100)*90){
+				
+		let cbutton = document.getElementsByClassName("btn ng-star-inserted btn-warning cashout")
+		for(let cb=0; cb<cbutton.length; cb++){
+		console.log(`cashout button click`)
+		document.getElementsByClassName("bets-widget-footer")[0].innerHTML = `cashout : ${cashoutAmount}`
+		try{
+			cbutton[cb].click()
+			document.getElementsByClassName("bets-widget-footer")[0].innerHTML = `cashout : ${cashoutAmount}`
+		}catch(e){
+			console.log(`cash butto ${e}`)
+			}
+		}
+	}
+	
+}
+
+function monitorCashOutButton() {
+  const targetSelector = 'button.btn.ng-star-inserted.btn-warning.cashout';
+
+  function extractAmount(button) {
+    try {
+      const amountSpan = button.querySelector('label.amount > span');
+      if (amountSpan) {
+        const amountText = amountSpan.textContent.trim();
+        //console.log('💰 Cash Out Amount:', amountText);
+        return amountText;
+      }
+    } catch (e) {
+      console.error('Error extracting amount:', e);
+    }
+    return null;
+  }
+
+  function observeButtonSubtree(button) {
+    const subObserver = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        if (
+          mutation.type === 'characterData' ||
+          mutation.type === 'childList'
+        ) {
+          const amount = extractAmount(button);
+		  
+          if (amount !== null) {
+			let betAmount = parseFloat(document.getElementsByClassName("app-bet-control bet-control double-bet")[0].getElementsByClassName("spinner big")[0].getElementsByTagName('input')[0].value)
+	
+            lastCashOutProcess(parseFloat(amount), betAmount)
+          }
+        }
+      }
+    });
+
+    subObserver.observe(button, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+    });
+
+    console.log('✅ Now observing changes in Cash Out button subtree.');
+    // Extract amount initially
+    extractAmount(button);
+  }
+
+  function findAndObserveButton() {
+    const button = document.querySelector(targetSelector);
+    if (button) {
+      //console.log('✅ Cash Out button found:', button);
+      observeButtonSubtree(button);
+      return true;
+    }
+    return false;
+  }
+
+  if (!findAndObserveButton()) {
+    console.warn('⏳ Cash Out button not found, setting up observer...');
+
+    const bodyObserver = new MutationObserver(() => {
+      if (findAndObserveButton()) {
+        bodyObserver.disconnect(); // Stop once found
+      }
+    });
+
+    bodyObserver.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  }
+}
+
+// Start monitoring
+monitorCashOutButton();
+
