@@ -231,6 +231,8 @@ function autoBetPatternFinder(){
 	
     winnPatternResults  = winnPatternResults.reverse()
 	faildPatternResults = faildPatternResults.reverse()
+	
+	
 
     let priviusLastOdd = globalList[0] > 1.99 ? winnPatternResults.length < 1 ? globalList[0] : winnPatternResults[0]  : faildPatternResults.length < 1 ? globalList[0] : faildPatternResults[0]
     
@@ -278,7 +280,7 @@ function autoBetPatternFinder(){
                 </tr>`
         
 		let faildPatternResultsLength = faildPatternResults.length > 15 ? 15 : faildPatternResults.length
-        for(let x=0; x<faildPatternResults; x++){
+        for(let x=0; x<faildPatternResultsLength; x++){
             
             let colorW = faildPatternResults[x] < 2 ? 'red' : 'green'
             let colorWodd = priviusLastOddAfterHistory[x] < 2 ? 'red' : 'green'
