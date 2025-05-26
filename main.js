@@ -172,7 +172,6 @@ function autoBetPatternFinder(){
 		let pattern = []
 		
 		
-		
 		for(let x=0; x<newGlobalList.length; x++){
 			if(newGlobalList[x] < 2){
 				count += 1
@@ -190,7 +189,6 @@ function autoBetPatternFinder(){
 	let winnPatternResults  = []
 	let faildPatternResults = []
 	
-	
 	for(let x=globalList.length-1; x>=0; x--){
 		
 		if(newGlobalList.length < 1)
@@ -205,7 +203,6 @@ function autoBetPatternFinder(){
 		currentWinnPattern  = customeWinPattern()
 		currentFaildPattern = customeFaildPattern()
 
-        
 		if(currentWinnPattern.length > patternRange-1 & newGlobalList[0] > 1.99){
 			currentWinP = currentWinnPattern.slice(0, patternRange).toString()
 		    
@@ -216,7 +213,6 @@ function autoBetPatternFinder(){
 			}
 		}
 	
-
 		if(currentFaildPattern.length > patternRange-1 & newGlobalList[0] < 2){
 			currentFailP = currentFaildPattern.slice(0, patternRange).toString()
             
@@ -233,7 +229,6 @@ function autoBetPatternFinder(){
 	faildPatternResults = faildPatternResults.reverse()
 	
 	
-
     let priviusLastOdd = globalList[0] > 1.99 ? winnPatternResults.length < 1 ? globalList[0] : winnPatternResults[0]  : faildPatternResults.length < 1 ? globalList[0] : faildPatternResults[0]
     
     let priviusLastOddAfterHistory = []
@@ -425,7 +420,7 @@ if (targetNodeResult) {
 
 function lastCashOutProcess(cashoutAmount, betAmount){
 	
-	if(cashoutAmount > ((betAmount*2)/100)*90){
+	if(cashoutAmount >=  betAmount){
 				
 		let cbutton = document.getElementsByClassName("btn ng-star-inserted btn-warning cashout")
 		for(let cb=0; cb<cbutton.length; cb++){
@@ -469,9 +464,10 @@ function monitorCashOutButton() {
           const amount = extractAmount(button);
 		  
           if (amount !== null) {
-			let betAmount = parseFloat(document.getElementsByClassName("app-bet-control bet-control double-bet")[0].getElementsByClassName("spinner big")[0].getElementsByTagName('input')[0].value)
-	
-            lastCashOutProcess(parseFloat(amount), betAmount)
+			const betAmount = parseFloat(document.getElementsByClassName("app-bet-control bet-control double-bet")[0].getElementsByClassName("spinner big")[0].getElementsByTagName('input')[0].value)
+			const cashOutPointAmount = (((betAmount*2)/100)*90)
+			
+            lastCashOutProcess(parseFloat(amount), cashOutPointAmount)
           }
         }
       }
@@ -516,4 +512,3 @@ function monitorCashOutButton() {
 
 // Start monitoring
 monitorCashOutButton();
-
