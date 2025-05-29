@@ -974,6 +974,7 @@ function patternConfig(currentWinPattern = {
 	
 	const betsList = document.querySelector(".bets-list");
 	
+	console.log(`config : `, currentWinPattern)
 	
 	// game is on win 
     let s_history = '<table>'
@@ -1006,16 +1007,31 @@ function patternConfig(currentWinPattern = {
 			//console.log(`emulateWinnP  ${emulateWinnP} `)
 			//console.log(`emulateFaildP ${emulateFaildP} `)
 			
-			if(emulateWinnP.length > patternRange-1 & emulateFaildP > patternRange-1)
+			/*
+			console.log(` ----------- `)
+			
+			console.log(`${currentWinPattern.currentWinPattern[0]} >= ${emulateWinnP[0]} & `)
+			console.log(`${currentWinPattern.currentFaildPattern[0]} >= ${emulateFaildP[0]} & `)
+				
+			console.log(`orginal = ${currentWinPattern.currentWinPattern.slice(0, patternRange).toString()} -> ${currentWinPattern.currentWinPattern.slice(1, patternRange).toString()} = ${emulateWinnP.slice(1, patternRange).toString()} & `)
+			console.log(`orginal = ${currentWinPattern.currentFaildPattern.slice(0, patternRange).toString()} -> ${currentWinPattern.currentFaildPattern.slice(1, patternRange).toString()} = ${emulateFaildP.slice(1, patternRange).toString()}`)
+				
+			
+			console.log(`orginal = ${emulateWinnP.slice(0, patternRange).toString()} -> ${emulateWinnP.slice(1, patternRange).toString()}`)
+			console.log(`orginal = ${emulateFaildP.slice(0, patternRange).toString()} -> ${emulateFaildP.slice(1, patternRange).toString()}`)
+			*/
+			
+				
+			if(emulateWinnP.length > patternRange-1 & emulateFaildP.length > patternRange-1)
 			if(
 				currentWinPattern.currentWinPattern[0] 	>= emulateWinnP[0] & 
 				currentWinPattern.currentFaildPattern[0]	>= emulateFaildP[0] & 
 				
-				currentWinPattern.currentWinPattern.slice(1, patternRange).toString() 		== emulateWinnP.slice(1, patternRange) & 
-				currentWinPattern.currentFaildPattern.slice(1, patternRange).toString()	== emulateFaildP.slice(1, patternRange) 
+				currentWinPattern.currentWinPattern.slice(1, patternRange).toString() 		== emulateWinnP.slice(1, patternRange).toString() & 
+				currentWinPattern.currentFaildPattern.slice(1, patternRange).toString()	== emulateFaildP.slice(1, patternRange).toString() 
 			){
 				
-				console.log('try to compare Found ')
+				console.log('%ctry to compare Found ', 'color:green')
 				
 				console.log(`${currentWinPattern.currentWinPattern[0]} >= ${emulateWinnP[0]} & `)
 				console.log(`${currentWinPattern.currentFaildPattern[0]} >= ${emulateFaildP[0]} & `)
@@ -1085,16 +1101,13 @@ function autoBetPatternFinder(){
 	betsList.innerHTML += stringHtmlPatterns
 
 
-	let globalCurrentWinndPattern = winnp.slice(0, patternRange).toString()
-	let globalCurrentFaildPattern = faildp.slice(0, patternRange).toString()
-	
 	//console.log(`globalCurrentWinndPattern : ${globalCurrentWinndPattern}`)
 	//console.log(`globalCurrentFaildPattern : ${globalCurrentFaildPattern}`)
 
-	patternConfig({'currentWinPattern':globalCurrentWinndPattern, 'currentFaildPattern':globalCurrentFaildPattern})
+	patternConfig({'currentWinPattern':winnp, 'currentFaildPattern':faildp})
 
 	
-    s_history += `
+    let s_history = `
         <br>
         <div>
 			<center>
@@ -1180,7 +1193,6 @@ if (targetNodeResult) {
 
 
 
-
 // ======================== cashout =============================
 
 function lastCashOutProcess(cashoutAmount, betAmount){
@@ -1230,7 +1242,7 @@ function monitorCashOutButton() {
 		  
           if (amount !== null) {
 			const betAmount = parseFloat(document.getElementsByClassName("app-bet-control bet-control double-bet")[0].getElementsByClassName("spinner big")[0].getElementsByTagName('input')[0].value)
-			const cashOutPointAmount = (((betAmount*2)/100)*90)
+			const cashOutPointAmount = (((betAmount*2)/100)*95)
 			
             lastCashOutProcess(parseFloat(amount), cashOutPointAmount)
           }
