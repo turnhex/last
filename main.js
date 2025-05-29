@@ -970,6 +970,7 @@ function faildPattern(data){
 function patternConfig(currentWinPattern = {
 	'currentWinPattern':null, 
 	'currentFaildPattern':null,
+	'statusLogic':''
 	} ){
 	
 	const betsList = document.querySelector(".bets-list");
@@ -1001,6 +1002,7 @@ function patternConfig(currentWinPattern = {
 				globalListEmulated = tmpGlobalListEmulated
 			}
 			
+			
 			let emulateWinnP 	= winnPattern(globalListEmulated)
 			let emulateFaildP 	= faildPattern(globalListEmulated)
 			
@@ -1021,8 +1023,9 @@ function patternConfig(currentWinPattern = {
 			console.log(`orginal = ${emulateFaildP.slice(0, patternRange).toString()} -> ${emulateFaildP.slice(1, patternRange).toString()}`)
 			*/
 			
+			let statusLogic = globalListEmulated[0] < 2 ? 'faild' : 'winn'
 				
-			if(emulateWinnP.length > patternRange-1 & emulateFaildP.length > patternRange-1)
+			if( currentWinPattern.statusLogic == statusLogic & emulateWinnP.length > patternRange-1 & emulateFaildP.length > patternRange-1)
 			if(
 				currentWinPattern.currentWinPattern[0] 	>= emulateWinnP[0] & 
 				currentWinPattern.currentFaildPattern[0]	>= emulateFaildP[0] & 
@@ -1033,26 +1036,53 @@ function patternConfig(currentWinPattern = {
 				
 				console.log('%ctry to compare Found ', 'color:green')
 				
+				console.log(`statusLogic ${currentWinPattern.statusLogic} == ${statusLogic}`)
 				console.log(`${currentWinPattern.currentWinPattern[0]} >= ${emulateWinnP[0]} & `)
 				console.log(`${currentWinPattern.currentFaildPattern[0]} >= ${emulateFaildP[0]} & `)
+					
+				console.log(`current gameW orginal = ${currentWinPattern.currentWinPattern.slice(0, patternRange).toString()} -> ${currentWinPattern.currentWinPattern.slice(1, patternRange).toString()} = ${emulateWinnP.slice(1, patternRange).toString()} & `)
+				console.log(`current gameF orginal = ${currentWinPattern.currentFaildPattern.slice(0, patternRange).toString()} -> ${currentWinPattern.currentFaildPattern.slice(1, patternRange).toString()} = ${emulateFaildP.slice(1, patternRange).toString()}`)
+					
 				
-				console.log(`${currentWinPattern.currentWinPattern.slice(1, patternRange).toString()} = ${emulateWinnP.slice(1, patternRange)} & `)
-				console.log(`${currentWinPattern.currentFaildPattern.slice(1, patternRange).toString()} = ${emulateFaildP.slice(1, patternRange)}`)
+				console.log(`data set w orginal = ${emulateWinnP.slice(0, patternRange).toString()} -> ${emulateWinnP.slice(1, patternRange).toString()}`)
+				console.log(`data set f orginal = ${emulateFaildP.slice(0, patternRange).toString()} -> ${emulateFaildP.slice(1, patternRange).toString()}`)
 				
-				console.log('Next Will Bet : ', currentDataSet[x-1])
 				
-				if(currentDataSet[x-1] < 2 ){
-					console.log(`%c Next Will be : ${currentDataSet[x-1]}`, 'color:red')
+				
+				console.log(`current gameW orginal = ${currentWinPattern.currentWinPattern.slice(0, patternRange).toString()} == ${emulateWinnP.slice(0, patternRange).toString()}& `)
+				console.log(`current gameF orginal = ${currentWinPattern.currentFaildPattern.slice(0, patternRange).toString()} == ${emulateFaildP.slice(0, patternRange).toString()} `)
+				
+				
+				
+				console.log(`Next Will Bet : on index ${index_emulate} -> `, currentDataSet[index_emulate-1])
+				
+				let globalZeroSting = globalList[0] < 2 ? `<b style="color:red">${globalList[0]}</b>` : `<b style="color:green">${globalList[0]}</b>`
+				let currentDataSetPosition = currentDataSet[index_emulate] < 2 ? `<b style="color:red">${currentDataSet[index_emulate]}</b>` : `<b style="color:green">${currentDataSet[index_emulate]}</b>`
+					
+					
+				if(currentDataSet[index_emulate-1] > 1.99 ){
+					console.log(`%c Next Will be : ${currentDataSet[index_emulate-1]}`, 'color:green')
+					
+					
 					s_history += `
 					<tr>
-						<td style="color:yellow;  border:1px solid white; text-align: center; font-size:18px"><b style="color:green"> ${x} </b> ${currentDataSet[x-1]} </td>
+						<td>dataSet ${x}</td>
+						<td style="color:yellow;  border:1px solid white; text-align: left; font-size:18px; ">${index_emulate-1} <b style="color:green"> ${currentDataSet[index_emulate-1]} </b>  </td>
+						<td style="color:yellow;  border:1px solid white; text-align: left; font-size:18px">${globalZeroSting} - ${currentDataSetPosition} </td>
+						<td style="color:yellow;  border:1px solid white; "> ${currentWinPattern.currentWinPattern.slice(0, patternRange).toString()} == ${emulateWinnP.slice(0, patternRange).toString()} </td>
+						
 					</tr>`
 					
 				}else{
-					console.log(`%c Next Will be : ${currentDataSet[x-1]}`, 'color:green')
+					console.log(`%c Next Will be : ${currentDataSet[index_emulate-1]}`, 'color:red')
 					s_history += `
 					<tr>
-						<td style="color:yellow;  border:1px solid white; text-align: center; font-size:18px"><b style="color:red"> ${x} </b> ${currentDataSet[x-1]} </td>
+						<td>dataSet ${x}</td>
+						<td style="color:yellow;  border:1px solid white; text-align: left;font-size:18px; ">${index_emulate-1} <b style="color:red"> ${currentDataSet[index_emulate-1]} </b>  </td>
+						<td style="color:yellow;  border:1px solid white; text-align: left; font-size:18px">${globalZeroSting} - ${currentDataSetPosition} </td>
+						<td style="color:yellow;  border:1px solid white; ">${currentWinPattern.currentWinPattern.slice(0, patternRange).toString()} == ${emulateWinnP.slice(0, patternRange).toString()} </td>
+						
+						
 					</tr>`
 				}
 				
@@ -1104,7 +1134,9 @@ function autoBetPatternFinder(){
 	//console.log(`globalCurrentWinndPattern : ${globalCurrentWinndPattern}`)
 	//console.log(`globalCurrentFaildPattern : ${globalCurrentFaildPattern}`)
 
-	patternConfig({'currentWinPattern':winnp, 'currentFaildPattern':faildp})
+	let statusLogic = globalList[0] < 2 ? 'faild' : 'winn'
+	
+	patternConfig({'currentWinPattern':winnp, 'currentFaildPattern':faildp, 'statusLogic':statusLogic})
 
 	
     let s_history = `
