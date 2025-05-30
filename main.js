@@ -1700,7 +1700,8 @@ function lastWinOddsList(){
 	let string_html = '<center>'
 	for(let x=0; x<globalList.length; x++){
 		if(globalList[x] > 1.99){
-			string_html += `${globalList[x]} - `
+			let color = globalList[x] < 3 ? '#EF4B28' : '#37E812'
+			string_html += `<result style="color:${color}">${globalList[x]} - </result>`
 		count++
 		}
 		
