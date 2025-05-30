@@ -1690,6 +1690,35 @@ function hiddenMode(){
 //hiddenMode()
 
 
+function changeDataSetToGlobal(){
+	dataSet = [globalList]
+}
+
+function lastWinOddsList(){
+	let count = 0;
+
+	let string_html = '<center>'
+	for(let x=0; x<globalList.length; x++){
+		if(globalList[x] > 1.99){
+			string_html += `${globalList[x]} - `
+		count++
+		}
+		
+		if(count > 10){
+			x = globalList.length
+			break;
+		}
+		
+	}
+	string_html += '</center>'
+	
+	const betsList = document.querySelector(".bets-list");
+	
+	betsList.innerHTML += string_html
+	
+	return true
+}
+
 //function to change patternRange
 function incremmentPatternRange(s){
     if(s === 'i')
@@ -1813,7 +1842,7 @@ function patternConfig(currentWinPattern = {
 			
 			let statusLogic = globalListEmulated[0] < 2 ? 'faild' : 'winn'
 				
-			if( currentWinPattern.statusLogic === statusLogic && emulateWinnP.length > patternRange-1 && emulateFaildP.length > patternRange-1)
+			if( currentWinPattern.statusLogic === statusLogic && emulateWinnP.length >= patternRange && emulateFaildP.length >= patternRange)
 			if(
 				currentWinPattern.currentWinPattern[0] 	=== emulateWinnP[0] && 
 				currentWinPattern.currentFaildPattern[0]	=== emulateFaildP[0] && 
@@ -1897,6 +1926,10 @@ function autoBetPatternFinder(){
     if (betsList) 
 		 betsList.innerHTML = `<center style="font-size:18px;"> -- Code By <i>turnhex</i>  [${globalList.length}] ${globalList[0]}--</center>`;
 
+
+	lastWinOddsList()
+	
+	
 	let winnp  = winnPattern(globalList)
 	let faildp = faildPattern(globalList)
 	
@@ -2060,7 +2093,7 @@ function monitorCashOutButton() {
         ) {
           const amount = extractAmount(button);
 		  
-          if (amount !=== null) {
+          if (amount !== null) {
 			const betAmount = parseFloat(document.getElementsByClassName("app-bet-control bet-control double-bet")[0].getElementsByClassName("spinner big")[0].getElementsByTagName('input')[0].value)
 			const cashOutPointAmount = (((betAmount*2)/100)*95)
 			
@@ -2108,4 +2141,4 @@ function monitorCashOutButton() {
 }
 
 // Start monitoring
-monitorCashOutButton();
+//monitorCashOutButton();
